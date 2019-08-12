@@ -36,7 +36,7 @@ const App = () => {
       <div style={{ flex: 1 }}>
         <h1>リスト配列</h1>
         <ul>
-          {list.map(i => <li>{`{ id: ${i.id}, name: '${i.name}', parentId: ${i.parentId} }`}</li>)}
+          {list.map(i => <li key={i.id}>{`{ id: ${i.id}, name: '${i.name}', parentId: ${i.parentId} }`}</li>)}
         </ul>
       </div>
     </div>
