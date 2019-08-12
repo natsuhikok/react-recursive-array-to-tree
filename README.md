@@ -7,10 +7,10 @@
 サンプルサイト: https://react-recursive-array-to-tree.netlify.com/
 レポジトリ: https://github.com/natsuhikok/react-recursive-array-to-tree
 
-リストデータ
+## リストデータ
 以下の配列をツリー表示にします。
 
-list.js
+```list.js
 const list = [
  { id: 1, name: 'at 01', parentId: 0 },
  { id: 2, name: 'at 02', parentId: 0 },
@@ -30,10 +30,14 @@ const list = [
  { id: 16, name: 'at 08-01', parentId: 8 },
  { id: 17, name: 'at 09', parentId: 0 },
 ];
-再帰コンポーネント
-<RecursiveComponent rootId={0} list={list} />でリストと最初の回で表示するparentIdを渡します。
+```
 
-RecursiveComponent.jsx
+## 再帰コンポーネント
+
+`<RecursiveComponent rootId={0} list={list} />`でリストと最初の回で表示する`parentId`を渡します。
+
+
+```RecursiveComponent.jsx
 import React from 'react';
 export const RecursiveComponent = ({ list, rootId }) => {
   const targetList = list.filter(item => item.parentId === rootId);
@@ -50,3 +54,4 @@ export const RecursiveComponent = ({ list, rootId }) => {
     </ul>
   )
 }
+```
