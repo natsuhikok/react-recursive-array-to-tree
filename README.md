@@ -1,68 +1,52 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[React 再帰コンポーネント 親子関係を持つリストをツリー表示する](https://qiita.com/hikonaz/items/b0d1f6e1486563ab9391)のサンプルコートです。
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+親子関係を持つリストをツリー表示するコンポーネント。
 
-### `npm start`
+サンプルサイト: https://react-recursive-array-to-tree.netlify.com/
+レポジトリ: https://github.com/natsuhikok/react-recursive-array-to-tree
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+リストデータ
+以下の配列をツリー表示にします。
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+list.js
+const list = [
+ { id: 1, name: 'at 01', parentId: 0 },
+ { id: 2, name: 'at 02', parentId: 0 },
+ { id: 3, name: 'at 03', parentId: 0 },
+ { id: 4, name: 'at 04', parentId: 0 },
+ { id: 5, name: 'at 05', parentId: 0 },
+ { id: 6, name: 'at 06', parentId: 0 },
+ { id: 7, name: 'at 07', parentId: 0 },
+ { id: 8, name: 'at 08', parentId: 0 },
+ { id: 9, name: 'at 01-01', parentId: 1 },
+ { id: 10, name: 'at 02-01', parentId: 2 },
+ { id: 11, name: 'at 02-01-01', parentId: 10 },
+ { id: 12, name: 'at 02-02', parentId: 2 },
+ { id: 13, name: 'at 03-01', parentId: 3 },
+ { id: 14, name: 'at 03-01-01', parentId: 13 },
+ { id: 15, name: 'at 03-01-01-01', parentId: 14 },
+ { id: 16, name: 'at 08-01', parentId: 8 },
+ { id: 17, name: 'at 09', parentId: 0 },
+];
+再帰コンポーネント
+<RecursiveComponent rootId={0} list={list} />でリストと最初の回で表示するparentIdを渡します。
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+RecursiveComponent.jsx
+import React from 'react';
+export const RecursiveComponent = ({ list, rootId }) => {
+  const targetList = list.filter(item => item.parentId === rootId);
+  return (
+    <ul>
+      {targetList.map(item => (
+        <li key={item.id}>
+          <span>#{item.id}</span> {item.name}
+          {list.find(l => l.parentId === item.id) &&
+            <RecursiveComponent list={list} rootId={item.id} />
+          }
+        </li>
+      ))}
+    </ul>
+  )
+}
